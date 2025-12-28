@@ -1279,8 +1279,19 @@
         const contactForm = document.querySelector('.contact-form');
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('¡Gracias por tu mensaje! Te contactaremos pronto.');
-            contactForm.reset();
+            
+            // Create and show success message
+            const submitButton = contactForm.querySelector('button');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = '✓ ¡Mensaje Enviado!';
+            submitButton.style.background = 'linear-gradient(135deg, #84ff00 0%, #00d4ff 100%)';
+            
+            // Reset after 3 seconds
+            setTimeout(() => {
+                submitButton.textContent = originalText;
+                submitButton.style.background = '';
+                contactForm.reset();
+            }, 3000);
         });
 
         // ===== SMOOTH SCROLL FOR CTA BUTTON =====
