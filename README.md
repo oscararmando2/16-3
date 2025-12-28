@@ -10,17 +10,28 @@ Agencia creativa especializada en soluciones integrales de marketing digital. Of
 
 El sitio web se despliega automáticamente a GitHub Pages mediante GitHub Actions cuando se realizan cambios en las ramas `main` o `copilot/publish-website`.
 
-### Configuración de GitHub Pages
+### ⚠️ IMPORTANTE: Configuración Requerida de GitHub Pages
 
-Para que el despliegue funcione correctamente, asegúrate de que GitHub Pages esté configurado en la configuración del repositorio:
+Para que el despliegue funcione correctamente, **DEBES** configurar GitHub Pages en el repositorio:
 
-1. Ve a **Settings** → **Pages**
-2. En **Source**, selecciona **GitHub Actions**
-3. El sitio se desplegará automáticamente en: `https://oscararmando2.github.io/16-3/`
+#### Pasos para activar GitHub Pages:
 
-### Despliegue Manual
+1. Ve a tu repositorio en GitHub: https://github.com/oscararmando2/16-3
+2. Haz clic en **Settings** (Configuración) en la parte superior
+3. En el menú lateral izquierdo, haz clic en **Pages**
+4. En la sección **Source** (Fuente), selecciona **GitHub Actions**
+5. Haz clic en **Save** (Guardar)
+6. Espera unos minutos para que se complete el despliegue
+7. Tu sitio estará disponible en: `https://oscararmando2.github.io/16-3/`
 
-También puedes desplegar manualmente usando la opción "workflow_dispatch" en la pestaña **Actions** del repositorio.
+#### Despliegue Manual
+
+También puedes desplegar manualmente:
+1. Ve a la pestaña **Actions** del repositorio
+2. Selecciona el workflow "Deploy to GitHub Pages"
+3. Haz clic en **Run workflow**
+4. Selecciona la rama `copilot/publish-website` o `main`
+5. Haz clic en **Run workflow** de nuevo
 
 ## Estructura del Proyecto
 
