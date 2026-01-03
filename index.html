@@ -16,19 +16,20 @@
             --color-bg-card: #1a1a27;
             --color-text-primary: #ffffff;
             --color-text-secondary: #b4b4c8;
-            --color-accent-blue: #00d4ff;
-            --color-accent-purple: #a855f7;
-            --color-accent-lime: #84ff00;
-            --color-accent-orange: #ff6b35;
-            --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #a855f7 100%);
-            --gradient-secondary: linear-gradient(135deg, #84ff00 0%, #00d4ff 100%);
-            --gradient-warm: linear-gradient(135deg, #ff6b35 0%, #a855f7 100%);
+            --color-accent-orange: #E85014;
+            --color-accent-orange-light: #FF6B35;
+            --color-accent-orange-dark: #C44010;
+            --color-accent-black: #1a1a1a;
+            --gradient-primary: linear-gradient(135deg, #E85014 0%, #1a1a1a 100%);
+            --gradient-secondary: linear-gradient(135deg, #FF6B35 0%, #E85014 100%);
+            --gradient-warm: linear-gradient(135deg, #E85014 0%, #C44010 100%);
+            --gradient-orange-glow: linear-gradient(135deg, #E85014 0%, #FF6B35 50%, #1a1a1a 100%);
             --font-logo: 'Titan One', cursive;
             --font-heading: 'Montserrat', sans-serif;
             --font-body: 'Inter', sans-serif;
             --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            --shadow-glow-blue: 0 0 30px rgba(0, 212, 255, 0.4);
-            --shadow-glow-purple: 0 0 30px rgba(168, 85, 247, 0.4);
+            --shadow-glow-orange: 0 0 30px rgba(232, 80, 20, 0.5);
+            --shadow-glow-orange-intense: 0 0 50px rgba(232, 80, 20, 0.7);
         }
 
         /* ===== RESET & BASE ===== */
@@ -124,7 +125,7 @@
 
         .nav-logo:hover {
             transform: scale(1.05);
-            filter: drop-shadow(var(--shadow-glow-blue));
+            filter: drop-shadow(var(--shadow-glow-orange));
         }
 
         .nav-menu {
@@ -154,7 +155,7 @@
         }
 
         .nav-link:hover {
-            color: var(--color-accent-blue);
+            color: var(--color-accent-orange);
         }
 
         .nav-link:hover::after {
@@ -206,8 +207,8 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(232, 80, 20, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(26, 26, 26, 0.3) 0%, transparent 50%);
             animation: gradientShift 10s ease infinite;
         }
 
@@ -229,7 +230,7 @@
             position: absolute;
             width: 3px;
             height: 3px;
-            background: var(--color-accent-blue);
+            background: var(--color-accent-orange);
             border-radius: 50%;
             animation: float 15s infinite;
             opacity: 0.3;
@@ -258,7 +259,7 @@
             background-clip: text;
             margin-bottom: 1rem;
             animation: fadeInUp 1s ease-out;
-            text-shadow: 0 0 80px rgba(0, 212, 255, 0.5);
+            text-shadow: 0 0 80px rgba(232, 80, 20, 0.5);
         }
 
         .hero-headline {
@@ -321,7 +322,7 @@
 
         .cta-button:hover {
             transform: translateY(-3px) scale(1.05);
-            box-shadow: var(--shadow-glow-blue);
+            box-shadow: var(--shadow-glow-orange-intense);
         }
 
         .cta-button:hover::before {
@@ -398,7 +399,7 @@
 
         .service-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: var(--shadow-glow-blue);
+            box-shadow: var(--shadow-glow-orange);
         }
 
         .service-card:hover::before {
@@ -534,7 +535,7 @@
         }
 
         .portfolio-category {
-            color: var(--color-accent-blue);
+            color: var(--color-accent-orange);
             font-size: 0.9rem;
         }
 
@@ -595,14 +596,14 @@
             top: 0;
             width: 12px;
             height: 12px;
-            background: var(--color-accent-blue);
+            background: var(--color-accent-orange);
             border-radius: 50%;
-            box-shadow: var(--shadow-glow-blue);
+            box-shadow: var(--shadow-glow-orange);
         }
 
         .timeline-year {
             font-weight: 700;
-            color: var(--color-accent-blue);
+            color: var(--color-accent-orange);
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
         }
@@ -649,7 +650,7 @@
             height: 100px;
             border-radius: 50%;
             margin: 0 auto 1.5rem;
-            border: 3px solid var(--color-accent-blue);
+            border: 3px solid var(--color-accent-orange);
             object-fit: cover;
         }
 
@@ -668,7 +669,7 @@
         }
 
         .testimonial-role {
-            color: var(--color-accent-blue);
+            color: var(--color-accent-orange);
             font-size: 0.9rem;
         }
 
@@ -745,7 +746,7 @@
         }
 
         .footer-links a:hover {
-            color: var(--color-accent-blue);
+            color: var(--color-accent-orange);
             padding-left: 5px;
         }
 
@@ -769,8 +770,8 @@
         .contact-form input:focus,
         .contact-form textarea:focus {
             outline: none;
-            border-color: var(--color-accent-blue);
-            box-shadow: var(--shadow-glow-blue);
+            border-color: var(--color-accent-orange);
+            box-shadow: var(--shadow-glow-orange);
         }
 
         .contact-form button {
@@ -786,7 +787,7 @@
 
         .contact-form button:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-glow-blue);
+            box-shadow: var(--shadow-glow-orange-intense);
         }
 
         .social-links {
@@ -812,7 +813,7 @@
         .social-link:hover {
             background: var(--gradient-primary);
             transform: translateY(-5px) rotate(5deg);
-            box-shadow: var(--shadow-glow-blue);
+            box-shadow: var(--shadow-glow-orange);
         }
 
         .footer-bottom {
@@ -1284,7 +1285,7 @@
             const submitButton = contactForm.querySelector('button');
             const originalText = submitButton.textContent;
             submitButton.textContent = '✓ ¡Mensaje Enviado!';
-            submitButton.style.background = 'linear-gradient(135deg, #84ff00 0%, #00d4ff 100%)';
+            submitButton.style.background = 'linear-gradient(135deg, #E85014 0%, #FF6B35 100%)';
             
             // Reset after 3 seconds
             setTimeout(() => {
