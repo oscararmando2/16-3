@@ -1,5 +1,6 @@
 // Service Worker for 16:3 PWA
-const CACHE_VERSION = 'v1';
+// Updated cache version to force refresh after contact info updates
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `16-3-${CACHE_VERSION}`;
 const GOOGLE_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Titan+One&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap';
 
@@ -12,8 +13,11 @@ const urlsToCache = [
   GOOGLE_FONTS_URL
 ];
 
-// Install event - cache resources
+// Install event - cache resources and skip waiting
 self.addEventListener('install', (event) => {
+  // Force the waiting service worker to become the active service worker
+  self.skipWaiting();
+  
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
@@ -23,8 +27,30 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch event - serve from cache when offline
+// Fetch event - network-first for HTML, cache-first for assets
 self.addEventListener('fetch', (event) => {
+  // Network-first strategy for HTML to ensure fresh content
+  const acceptHeader = event.request.headers.get('accept');
+  if (acceptHeader && acceptHeader.includes('text/html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Clone and cache the response
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+          return response;
+        })
+        .catch(() => {
+          // If network fails, try cache
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+
+  // Cache-first strategy for other resources
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
@@ -67,19 +93,25 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Activate event - clean up old caches
+// Activate event - clean up old caches and take control immediately
 self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [CACHE_NAME];
+  // Take control of all clients immediately
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    Promise.all([
+      // Clean up old caches
+      caches.keys().then((cacheNames) => {
+        const cacheWhitelist = [CACHE_NAME];
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (cacheWhitelist.indexOf(cacheName) === -1) {
+              console.log('Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      }),
+      // Take control of all pages immediately
+      self.clients.claim()
+    ])
   );
 });
