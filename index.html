@@ -8,8 +8,8 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="icon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="icon-72x72.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icon-16x16.png">
     
     <!-- Web App Manifest -->
     <link rel="manifest" href="manifest.json">
@@ -1336,7 +1336,11 @@
         // ===== SERVICE WORKER REGISTRATION =====
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/16-3/service-worker.js')
+                // Determine the base path dynamically
+                const basePath = window.location.pathname.includes('/16-3/') ? '/16-3/' : '/';
+                const swPath = basePath + 'service-worker.js';
+                
+                navigator.serviceWorker.register(swPath)
                     .then((registration) => {
                         console.log('Service Worker registered successfully:', registration.scope);
                     })

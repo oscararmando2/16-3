@@ -1,12 +1,15 @@
 // Service Worker for 16:3 PWA
-const CACHE_NAME = '16-3-v1';
+const CACHE_VERSION = 'v1';
+const CACHE_NAME = `16-3-${CACHE_VERSION}`;
+const GOOGLE_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Titan+One&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap';
+
 const urlsToCache = [
   '/16-3/',
   '/16-3/index.html',
   '/16-3/manifest.json',
   '/16-3/icon-192x192.png',
   '/16-3/icon-512x512.png',
-  'https://fonts.googleapis.com/css2?family=Titan+One&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap'
+  GOOGLE_FONTS_URL
 ];
 
 // Install event - cache resources
@@ -29,9 +32,38 @@ self.addEventListener('fetch', (event) => {
         if (response) {
           return response;
         }
-        return fetch(event.request);
-      }
-    )
+        // Clone the request
+        const fetchRequest = event.request.clone();
+        
+        return fetch(fetchRequest)
+          .then((response) => {
+            // Check if valid response
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+            // Clone the response
+            const responseToCache = response.clone();
+            
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            
+            return response;
+          })
+          .catch(() => {
+            // Network failed, return a basic offline message
+            console.log('Fetch failed; returning offline page');
+            // You could return a custom offline page here
+            return new Response('Offline - Content not available', {
+              status: 503,
+              statusText: 'Service Unavailable',
+              headers: new Headers({
+                'Content-Type': 'text/plain'
+              })
+            });
+          });
+      })
   );
 });
 
@@ -43,6 +75,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
+            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
