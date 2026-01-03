@@ -30,7 +30,8 @@ self.addEventListener('install', (event) => {
 // Fetch event - network-first for HTML, cache-first for assets
 self.addEventListener('fetch', (event) => {
   // Network-first strategy for HTML to ensure fresh content
-  if (event.request.headers.get('accept').includes('text/html')) {
+  const acceptHeader = event.request.headers.get('accept');
+  if (acceptHeader && acceptHeader.includes('text/html')) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
