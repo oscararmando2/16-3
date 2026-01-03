@@ -462,10 +462,6 @@
         }
 
         /* Tooltip for service descriptions */
-        .service-card {
-            position: relative;
-        }
-
         .service-card:hover::after {
             content: attr(data-description);
             position: absolute;
@@ -923,9 +919,9 @@
                 padding: 1rem;
             }
 
-            .service-card {
-                transform: rotate(0deg) !important;
-                margin: 1rem 0 !important;
+            .services-grid .service-card {
+                transform: rotate(0deg);
+                margin: 1rem 0;
                 width: 280px;
                 height: 220px;
             }
@@ -954,7 +950,7 @@
                 font-size: 1rem;
             }
 
-            .service-card {
+            .services-grid .service-card {
                 width: 240px;
                 height: 200px;
             }
