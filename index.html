@@ -837,6 +837,24 @@
             box-shadow: var(--shadow-glow-orange-intense);
         }
 
+        .whatsapp-button {
+            display: block;
+            padding: 1rem;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 10px;
+            color: var(--color-text-primary);
+            font-weight: 700;
+            text-decoration: none;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow-orange-intense);
+        }
+
         .social-links {
             display: flex;
             gap: 1rem;
@@ -1265,18 +1283,15 @@
             <div class="footer-section">
                 <h3>Contacto</h3>
                 <ul class="footer-links">
-                    <li>📧 info@16-3.com</li>
-                    <li>📞 +1 (555) 123-4567</li>
-                    <li>📍 Ciudad, País</li>
+                    <li>📞 +1 315 850 96 15</li>
+                    <li>📍 Zitacuaro Michoacan Mx y San Louis Missouri Usa</li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3>Contáctanos</h3>
-                <form class="contact-form">
-                    <input type="email" placeholder="Tu email" required>
-                    <textarea placeholder="Tu mensaje" rows="3" required></textarea>
-                    <button type="submit">Enviar Mensaje</button>
-                </form>
+                <div class="contact-form">
+                    <a href="https://wa.me/13158509615" target="_blank" class="whatsapp-button">Enviar Mensaje</a>
+                </div>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1393,25 +1408,6 @@
                 currentTestimonial = parseInt(dot.getAttribute('data-index'));
                 showTestimonial(currentTestimonial);
             });
-        });
-
-        // ===== CONTACT FORM =====
-        const contactForm = document.querySelector('.contact-form');
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Create and show success message
-            const submitButton = contactForm.querySelector('button');
-            const originalText = submitButton.textContent;
-            submitButton.textContent = '✓ ¡Mensaje Enviado!';
-            submitButton.style.background = 'linear-gradient(135deg, #E85014 0%, #FF6B35 100%)';
-            
-            // Reset after 3 seconds
-            setTimeout(() => {
-                submitButton.textContent = originalText;
-                submitButton.style.background = '';
-                contactForm.reset();
-            }, 3000);
         });
 
         // ===== SMOOTH SCROLL FOR CTA BUTTON =====
