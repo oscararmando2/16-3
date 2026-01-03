@@ -58,6 +58,21 @@ También puedes desplegar manualmente:
 - 📱 Optimizado para dispositivos móviles
 - 🚀 Animaciones suaves
 - 🎯 SEO optimizado
+- 📲 **PWA (Progressive Web App)** - Instalable en iPhone y Android
+- 🖼️ Iconos personalizados para pantalla de inicio
+- 🔄 Funcionalidad offline con Service Worker
+
+## 📱 Instalar en tu iPhone
+
+¡Ahora puedes instalar 16:3 en la pantalla de inicio de tu iPhone como una app! 
+
+**[Ver instrucciones completas →](INSTALACION_IPHONE.md)**
+
+**Resumen rápido:**
+1. Abre el sitio en Safari en tu iPhone
+2. Toca el botón Compartir 📤
+3. Selecciona "Añadir a pantalla de inicio"
+4. ¡Disfruta de la experiencia como app nativa!
 
 ## Contacto
 
