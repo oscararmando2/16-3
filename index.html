@@ -401,58 +401,127 @@
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
+            gap: 2rem;
             padding: 2rem;
         }
 
-        .service-card {
-            position: relative;
-            width: 180px;
-            height: 200px;
-            background: linear-gradient(135deg, rgba(232, 80, 20, 0.15) 0%, rgba(255, 107, 53, 0.1) 50%, rgba(255, 255, 255, 0.1) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: 0.5s;
+        .service-card-outer {
+            width: 300px;
+            height: 250px;
             border-radius: 10px;
-            margin: 0 -45px;
-            backdrop-filter: blur(10px);
-            transform: rotate(calc(var(--r) * 1deg));
-            cursor: pointer;
+            padding: 1px;
+            background: radial-gradient(circle 230px at 0% 0%, #E85002, #0c0d0d);
+            position: relative;
         }
 
-        .services-grid:hover .service-card {
-            transform: rotate(0deg);
-            margin: 0 10px;
-        }
-
-        .service-card::before {
-            content: attr(data-text);
+        .service-card-dot {
+            width: 5px;
+            aspect-ratio: 1;
             position: absolute;
-            bottom: 0;
+            background-color: #E85002;
+            box-shadow: 0 0 10px #E85002;
+            border-radius: 100px;
+            z-index: 2;
+            right: 10%;
+            top: 10%;
+            animation: moveDot 6s linear infinite;
+        }
+
+        @keyframes moveDot {
+            0%,
+            100% {
+                top: 10%;
+                right: 10%;
+            }
+            25% {
+                top: 10%;
+                right: calc(100% - 35px);
+            }
+            50% {
+                top: calc(100% - 30px);
+                right: calc(100% - 35px);
+            }
+            75% {
+                top: calc(100% - 30px);
+                right: 10%;
+            }
+        }
+
+        .service-card {
+            z-index: 1;
             width: 100%;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.05);
+            height: 100%;
+            border-radius: 9px;
+            border: solid 1px #202222;
+            background-size: 20px 20px;
+            background: radial-gradient(circle 280px at 0% 0%, #444444, #0c0d0d);
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-direction: column;
             color: #fff;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border-radius: 0 0 10px 10px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .service-card-outer:hover .service-card {
+            transform: scale(1.02);
+        }
+
+        .service-ray {
+            width: 220px;
+            height: 45px;
+            border-radius: 100px;
+            position: absolute;
+            background-color: #c7c7c7;
+            opacity: 0.4;
+            box-shadow: 0 0 50px #fff;
+            filter: blur(10px);
+            transform-origin: 10%;
+            top: 0%;
+            left: 0;
+            transform: rotate(40deg);
+        }
+
+        .service-card-label {
+            font-size: 1.4rem;
+            color: #fff;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .service-line {
+            width: 100%;
+            height: 1px;
+            position: absolute;
+            background-color: #2c2c2c;
+        }
+
+        .service-line-top {
+            top: 10%;
+            background: linear-gradient(90deg, #888888 30%, #1d1f1f 70%);
+        }
+
+        .service-line-bottom {
+            bottom: 10%;
+        }
+
+        .service-line-left {
+            left: 10%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, #747474 30%, #222424 70%);
+        }
+
+        .service-line-right {
+            right: 10%;
+            width: 1px;
+            height: 100%;
         }
 
         .service-icon {
-            font-size: 2.5em;
-            fill: #fff;
-            transition: var(--transition-smooth);
-            margin-bottom: 0.5rem;
-        }
-
-        .service-card:hover .service-icon {
-            transform: scale(1.1);
+            display: none;
         }
 
         .service-title {
@@ -464,13 +533,13 @@
         }
 
         /* Tooltip for service descriptions */
-        .service-card:hover::after {
+        .service-card-outer:hover::after {
             content: attr(data-description);
             position: absolute;
             bottom: -80px;
             left: 50%;
             transform: translateX(-50%);
-            width: 250px;
+            width: 280px;
             padding: 1rem;
             background: var(--color-bg-card);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -940,24 +1009,21 @@
                 align-items: center;
             }
 
-            .services-grid .service-card {
-                transform: rotate(0deg);
-                margin: 0.8rem 0;
-                width: 280px;
-                height: 220px;
+            .service-card-outer {
+                margin: 1rem 0;
                 animation: slideInMobile 0.6s ease-out backwards;
             }
 
             /* Staggered animation for mobile cards */
-            .services-grid .service-card:nth-child(1) { animation-delay: 0.1s; }
-            .services-grid .service-card:nth-child(2) { animation-delay: 0.2s; }
-            .services-grid .service-card:nth-child(3) { animation-delay: 0.3s; }
-            .services-grid .service-card:nth-child(4) { animation-delay: 0.4s; }
-            .services-grid .service-card:nth-child(5) { animation-delay: 0.5s; }
-            .services-grid .service-card:nth-child(6) { animation-delay: 0.6s; }
-            .services-grid .service-card:nth-child(7) { animation-delay: 0.7s; }
-            .services-grid .service-card:nth-child(8) { animation-delay: 0.8s; }
-            .services-grid .service-card:nth-child(9) { animation-delay: 0.9s; }
+            .service-card-outer:nth-child(1) { animation-delay: 0.1s; }
+            .service-card-outer:nth-child(2) { animation-delay: 0.2s; }
+            .service-card-outer:nth-child(3) { animation-delay: 0.3s; }
+            .service-card-outer:nth-child(4) { animation-delay: 0.4s; }
+            .service-card-outer:nth-child(5) { animation-delay: 0.5s; }
+            .service-card-outer:nth-child(6) { animation-delay: 0.6s; }
+            .service-card-outer:nth-child(7) { animation-delay: 0.7s; }
+            .service-card-outer:nth-child(8) { animation-delay: 0.8s; }
+            .service-card-outer:nth-child(9) { animation-delay: 0.9s; }
 
             @keyframes slideInMobile {
                 from {
@@ -970,14 +1036,8 @@
                 }
             }
 
-            .services-grid .service-card:hover {
-                transform: scale(1.05);
+            .service-card-outer:hover .service-card {
                 box-shadow: 0 15px 35px rgba(232, 80, 20, 0.4);
-            }
-
-            .service-card::before {
-                font-size: 0.9rem;
-                height: 50px;
             }
 
             section {
@@ -999,19 +1059,14 @@
                 font-size: 1rem;
             }
 
-            .services-grid .service-card {
-                width: 240px;
-                height: 200px;
-                margin: 0.6rem 0;
+            .service-card-outer {
+                width: 280px;
+                height: 220px;
+                margin: 0.8rem 0;
             }
 
-            .service-card::before {
-                font-size: 0.85rem;
-                height: 45px;
-            }
-
-            .service-icon {
-                font-size: 2em !important;
+            .service-card-label {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -1066,68 +1121,104 @@
                 <p class="section-subtitle">Soluciones integrales para llevar tu marca al siguiente nivel</p>
             </div>
             <div class="services-grid">
-                <div class="service-card scroll-reveal" data-text="Diseño Web" data-description="Sitios web modernos, responsivos y optimizados para convertir visitantes en clientes." style="--r:-25;">
-                    <svg class="service-icon" viewBox="0 0 640 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"></path>
-                    </svg>
-                    <h3 class="service-title">Diseño Web</h3>
-                    <p class="service-description">Sitios web modernos, responsivos y optimizados para convertir visitantes en clientes.</p>
+                <div class="service-card-outer scroll-reveal" data-description="Sitios web modernos, responsivos y optimizados para convertir visitantes en clientes.">
+                    <div class="service-card-dot"></div>
+                    <div class="service-card">
+                        <div class="service-ray"></div>
+                        <div class="service-card-label">Diseño Web</div>
+                        <div class="service-line service-line-top"></div>
+                        <div class="service-line service-line-left"></div>
+                        <div class="service-line service-line-bottom"></div>
+                        <div class="service-line service-line-right"></div>
+                    </div>
                 </div>
-                <div class="service-card scroll-reveal" data-text="Apps Móviles" data-description="Aplicaciones móviles intuitivas con experiencias de usuario excepcionales." style="--r:-15;">
-                    <svg class="service-icon" viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16 64C16 28.7 44.7 0 80 0H304c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H80c-35.3 0-64-28.7-64-64V64zM144 448c0 8.8 7.2 16 16 16h64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160c-8.8 0-16 7.2-16 16zM304 64H80V384H304V64z"></path>
-                    </svg>
-                    <h3 class="service-title">Diseño de Apps Móviles</h3>
-                    <p class="service-description">Aplicaciones móviles intuitivas con experiencias de usuario excepcionales.</p>
+                <div class="service-card-outer scroll-reveal" data-description="Aplicaciones móviles intuitivas con experiencias de usuario excepcionales.">
+                    <div class="service-card-dot"></div>
+                    <div class="service-card">
+                        <div class="service-ray"></div>
+                        <div class="service-card-label">Apps Móviles</div>
+                        <div class="service-line service-line-top"></div>
+                        <div class="service-line service-line-left"></div>
+                        <div class="service-line service-line-bottom"></div>
+                        <div class="service-line service-line-right"></div>
+                    </div>
                 </div>
-                <div class="service-card scroll-reveal" data-text="Marketing" data-description="Estrategias completas para aumentar tu presencia y ventas en línea." style="--r:-5;">
-                    <svg class="service-icon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64V400c0 44.2 35.8 80 80 80H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H80c-8.8 0-16-7.2-16-16V64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z"></path>
-                    </svg>
-                    <h3 class="service-title">Marketing Digital</h3>
-                    <p class="service-description">Estrategias completas para aumentar tu presencia y ventas en línea.</p>
+                <div class="service-card-outer scroll-reveal" data-description="Estrategias completas para aumentar tu presencia y ventas en línea.">
+                    <div class="service-card-dot"></div>
+                    <div class="service-card">
+                        <div class="service-ray"></div>
+                        <div class="service-card-label">Marketing</div>
+                        <div class="service-line service-line-top"></div>
+                        <div class="service-line service-line-left"></div>
+                        <div class="service-line service-line-bottom"></div>
+                        <div class="service-line service-line-right"></div>
+                    </div>
                 </div>
-                <div class="service-card scroll-reveal" data-text="Contenido" data-description="Contenido atractivo y relevante que conecta con tu audiencia." style="--r:5;">
-                    <svg class="service-icon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"></path>
-                    </svg>
-                    <h3 class="service-title">Creación de Contenido</h3>
-                    <p class="service-description">Contenido atractivo y relevante que conecta con tu audiencia.</p>
+                <div class="service-card-outer scroll-reveal" data-description="Contenido atractivo y relevante que conecta con tu audiencia.">
+                    <div class="service-card-dot"></div>
+                    <div class="service-card">
+                        <div class="service-ray"></div>
+                        <div class="service-card-label">Contenido</div>
+                        <div class="service-line service-line-top"></div>
+                        <div class="service-line service-line-left"></div>
+                        <div class="service-line service-line-bottom"></div>
+                        <div class="service-line service-line-right"></div>
+                    </div>
                 </div>
-                <div class="service-card scroll-reveal" data-text="SEO" data-description="Optimización para motores de búsqueda para mejorar tu visibilidad online." style="--r:15;">
-                    <svg class="service-icon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"></path>
-                    </svg>
-                    <h3 class="service-title">SEO</h3>
-                    <p class="service-description">Optimización para motores de búsqueda para mejorar tu visibilidad online.</p>
+                <div class="service-card-outer scroll-reveal" data-description="Optimización para motores de búsqueda para mejorar tu visibilidad online.">
+                    <div class="service-card-dot"></div>
+                    <div class="service-card">
+                        <div class="service-ray"></div>
+                        <div class="service-card-label">SEO</div>
+                        <div class="service-line service-line-top"></div>
+                        <div class="service-line service-line-left"></div>
+                        <div class="service-line service-line-bottom"></div>
+                        <div class="service-line service-line-right"></div>
+                    </div>
                 </div>
-                <div class="service-card scroll-reveal" data-text="Logotipos" data-description="Identidades visuales únicas que representan la esencia de tu marca." style="--r:25;">
-                    <svg class="service-icon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"></path>
-                    </svg>
-                    <h3 class="service-title">Creación de Logotipos</h3>
-                    <p class="service-description">Identidades visuales únicas que representan la esencia de tu marca.</p>
+                <div class="service-card-outer scroll-reveal" data-description="Identidades visuales únicas que representan la esencia de tu marca.">
+                    <div class="service-card-dot"></div>
+                    <div class="service-card">
+                        <div class="service-ray"></div>
+                        <div class="service-card-label">Logotipos</div>
+                        <div class="service-line service-line-top"></div>
+                        <div class="service-line service-line-left"></div>
+                        <div class="service-line service-line-bottom"></div>
+                        <div class="service-line service-line-right"></div>
+                    </div>
                 </div>
-                <div class="service-card scroll-reveal" data-text="Medios BTL" data-description="Estrategias de marketing directo para conectar con tu público objetivo." style="--r:35;">
-                    <svg class="service-icon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M480 32c0-12.9-7.8-24.6-19.8-29.6s-25.7-2.2-34.9 6.9L381.7 53c-48 48-113.1 75-181 75H192 160 64c-35.3 0-64 28.7-64 64v96c0 35.3 28.7 64 64 64l0 128c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32V352l8.7 0c67.9 0 133 27 181 75l43.6 43.6c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V300.4c18.6-8.8 32-32.5 32-60.4s-13.4-51.6-32-60.4V32zm-64 76.7V240 371.3C357.2 317.8 280.5 288 200.7 288H192V192h8.7c79.8 0 156.5-29.8 215.3-83.3z"></path>
-                    </svg>
-                    <h3 class="service-title">Medios BTL</h3>
-                    <p class="service-description">Estrategias de marketing directo para conectar con tu público objetivo.</p>
+                <div class="service-card-outer scroll-reveal" data-description="Estrategias de marketing directo para conectar con tu público objetivo.">
+                    <div class="service-card-dot"></div>
+                    <div class="service-card">
+                        <div class="service-ray"></div>
+                        <div class="service-card-label">Medios BTL</div>
+                        <div class="service-line service-line-top"></div>
+                        <div class="service-line service-line-left"></div>
+                        <div class="service-line service-line-bottom"></div>
+                        <div class="service-line service-line-right"></div>
+                    </div>
                 </div>
-                <div class="service-card scroll-reveal" data-text="Publicidad" data-description="Diseños impactantes para medios impresos tradicionales." style="--r:45;">
-                    <svg class="service-icon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"></path>
-                    </svg>
-                    <h3 class="service-title">Publicidad Impresa</h3>
-                    <p class="service-description">Diseños impactantes para medios impresos tradicionales.</p>
+                <div class="service-card-outer scroll-reveal" data-description="Diseños impactantes para medios impresos tradicionales.">
+                    <div class="service-card-dot"></div>
+                    <div class="service-card">
+                        <div class="service-ray"></div>
+                        <div class="service-card-label">Publicidad</div>
+                        <div class="service-line service-line-top"></div>
+                        <div class="service-line service-line-left"></div>
+                        <div class="service-line service-line-bottom"></div>
+                        <div class="service-line service-line-right"></div>
+                    </div>
                 </div>
-                <div class="service-card scroll-reveal" data-text="Inteligencia Artificial" data-description="Soluciones de IA: videos automatizados, agentes inteligentes, automatizaciones y más." style="--r:55;">
-                    <svg class="service-icon" viewBox="0 0 640 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M320 0c17.7 0 32 14.3 32 32V96H472c39.8 0 72 32.2 72 72V440c0 39.8-32.2 72-72 72H168c-39.8 0-72-32.2-72-72V168c0-39.8 32.2-72 72-72H288V32c0-17.7 14.3-32 32-32zM208 384c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H208zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H304zm96 0c-8.8 0-16 7.2-16 16s7.2 16 16 16h32c8.8 0 16-7.2 16-16s-7.2-16-16-16H400zM264 256a40 40 0 1 0 -80 0 40 40 0 1 0 80 0zm152 40a40 40 0 1 0 0-80 40 40 0 1 0 0 80zM48 224H64V416H48c-26.5 0-48-21.5-48-48V272c0-26.5 21.5-48 48-48zm544 0c26.5 0 48 21.5 48 48v96c0 26.5-21.5 48-48 48H576V224h16z"></path>
-                    </svg>
-                    <h3 class="service-title">Inteligencia Artificial</h3>
-                    <p class="service-description">Soluciones de IA: videos automatizados, agentes inteligentes, automatizaciones y más.</p>
+                <div class="service-card-outer scroll-reveal" data-description="Soluciones de IA: videos automatizados, agentes inteligentes, automatizaciones y más.">
+                    <div class="service-card-dot"></div>
+                    <div class="service-card">
+                        <div class="service-ray"></div>
+                        <div class="service-card-label">Inteligencia Artificial</div>
+                        <div class="service-line service-line-top"></div>
+                        <div class="service-line service-line-left"></div>
+                        <div class="service-line service-line-bottom"></div>
+                        <div class="service-line service-line-right"></div>
+                    </div>
                 </div>
             </div>
         </div>
