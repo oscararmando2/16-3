@@ -1016,6 +1016,27 @@
             transform: translateY(0);
         }
 
+        /* Mobile portfolio active state */
+        @media (max-width: 968px) {
+            .portfolio-item.mobile-active::before {
+                opacity: 0.9;
+            }
+
+            .portfolio-item.mobile-active::after {
+                width: 600px;
+                height: 600px;
+            }
+
+            .portfolio-item.mobile-active .portfolio-overlay {
+                transform: translateY(0);
+            }
+
+            .portfolio-item.mobile-active .portfolio-image {
+                transform: scale(1.15);
+                filter: grayscale(0%) brightness(1.1);
+            }
+        }
+
         .portfolio-title {
             font-family: var(--font-heading);
             font-size: 1.8rem;
@@ -2193,6 +2214,63 @@
 
         window.addEventListener('scroll', revealOnScroll);
         revealOnScroll(); // Initial check
+
+        // ===== MOBILE PORTFOLIO SCROLL EFFECT =====
+        const portfolioItemsForMobile = document.querySelectorAll('.portfolio-item');
+        const MOBILE_BREAKPOINT = 968; // Match CSS media query breakpoint
+        const CENTER_ZONE_START = 0.35; // 35% from top of viewport
+        const CENTER_ZONE_END = 0.65; // 65% from top of viewport
+        let portfolioScrollTimeout;
+        let portfolioScrollEndTimeout;
+        
+        const checkPortfolioCenter = () => {
+            // Only run on mobile devices
+            if (window.innerWidth > MOBILE_BREAKPOINT) {
+                // Remove mobile-active class on desktop
+                portfolioItemsForMobile.forEach(item => {
+                    item.classList.remove('mobile-active');
+                });
+                return;
+            }
+
+            const windowHeight = window.innerHeight;
+            const centerStart = windowHeight * CENTER_ZONE_START;
+            const centerEnd = windowHeight * CENTER_ZONE_END;
+            
+            portfolioItemsForMobile.forEach((item) => {
+                const rect = item.getBoundingClientRect();
+                const itemCenter = rect.top + (rect.height / 2);
+                
+                // Check if the center of the item is within the center zone of viewport
+                if (itemCenter >= centerStart && itemCenter <= centerEnd) {
+                    item.classList.add('mobile-active');
+                } else {
+                    item.classList.remove('mobile-active');
+                }
+            });
+        };
+
+        // Throttled scroll handler with trailing edge call for better performance
+        const handlePortfolioScroll = () => {
+            // Throttle during scroll
+            if (!portfolioScrollTimeout) {
+                checkPortfolioCenter();
+                portfolioScrollTimeout = setTimeout(() => {
+                    portfolioScrollTimeout = null;
+                }, 50); // 50ms throttle
+            }
+            
+            // Ensure final position is captured after scrolling stops
+            clearTimeout(portfolioScrollEndTimeout);
+            portfolioScrollEndTimeout = setTimeout(() => {
+                checkPortfolioCenter();
+            }, 150); // Check final position after scroll ends
+        };
+
+        // Run on scroll and resize
+        window.addEventListener('scroll', handlePortfolioScroll);
+        window.addEventListener('resize', checkPortfolioCenter);
+        checkPortfolioCenter(); // Initial check
     </script>
 </body>
 </html>
