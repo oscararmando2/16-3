@@ -2042,23 +2042,6 @@
             }
         });
 
-        // ===== SCROLL REVEAL ANIMATIONS =====
-        const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
-        
-        const revealOnScroll = () => {
-            scrollRevealElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight - 100) {
-                    element.classList.add('revealed');
-                }
-            });
-        };
-
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // Initial check
-
         // ===== PORTFOLIO FILTER =====
         const filterBtns = document.querySelectorAll('.filter-btn');
         const portfolioItems = document.querySelectorAll('.portfolio-item');
@@ -2163,7 +2146,7 @@
         // ===== PARALLAX EFFECT FOR HERO =====
         document.addEventListener('mousemove', (e) => {
             const heroContent = document.querySelector('.hero-content');
-            if (heroContent) {
+            if (heroContent && window.innerWidth > 968) {
                 const x = (window.innerWidth - e.pageX * 2) / 100;
                 const y = (window.innerHeight - e.pageY * 2) / 100;
                 
@@ -2182,7 +2165,7 @@
                 if (elementTop < windowHeight - 100) {
                     setTimeout(() => {
                         element.classList.add('revealed');
-                    }, index * 50); // Staggered reveal
+                    }, index * 30); // Staggered reveal
                 }
             });
         };
