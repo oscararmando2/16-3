@@ -2218,6 +2218,8 @@
         // ===== MOBILE PORTFOLIO SCROLL EFFECT =====
         const portfolioItemsForMobile = document.querySelectorAll('.portfolio-item');
         const MOBILE_BREAKPOINT = 968; // Match CSS media query breakpoint
+        const CENTER_ZONE_START = 0.35; // 35% from top of viewport
+        const CENTER_ZONE_END = 0.65; // 65% from top of viewport
         let portfolioScrollTimeout;
         let portfolioScrollEndTimeout;
         
@@ -2232,8 +2234,8 @@
             }
 
             const windowHeight = window.innerHeight;
-            const centerStart = windowHeight * 0.35; // 35% from top
-            const centerEnd = windowHeight * 0.65; // 65% from top
+            const centerStart = windowHeight * CENTER_ZONE_START;
+            const centerEnd = windowHeight * CENTER_ZONE_END;
             
             portfolioItemsForMobile.forEach((item) => {
                 const rect = item.getBoundingClientRect();
