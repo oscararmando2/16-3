@@ -2217,6 +2217,7 @@
 
         // ===== MOBILE PORTFOLIO SCROLL EFFECT =====
         const portfolioItemsForMobile = document.querySelectorAll('.portfolio-item');
+        let portfolioScrollTimeout;
         
         const checkPortfolioCenter = () => {
             // Only run on mobile devices
@@ -2245,8 +2246,19 @@
             });
         };
 
+        // Throttled scroll handler for better performance
+        const handlePortfolioScroll = () => {
+            if (portfolioScrollTimeout) {
+                return;
+            }
+            portfolioScrollTimeout = setTimeout(() => {
+                checkPortfolioCenter();
+                portfolioScrollTimeout = null;
+            }, 50); // 50ms throttle
+        };
+
         // Run on scroll and resize
-        window.addEventListener('scroll', checkPortfolioCenter);
+        window.addEventListener('scroll', handlePortfolioScroll);
         window.addEventListener('resize', checkPortfolioCenter);
         checkPortfolioCenter(); // Initial check
     </script>
