@@ -2446,8 +2446,8 @@
         // Register ScrollTrigger plugin
         gsap.registerPlugin(ScrollTrigger);
         
-        // Wait for page load to initialize GSAP animations
-        window.addEventListener('load', () => {
+        // Wait for DOM to be ready to initialize GSAP animations
+        window.addEventListener('DOMContentLoaded', () => {
             // 1. Hero Parallax Effect - Multiple layers with different speeds
             gsap.to('.hero-bg-layer-1', {
                 yPercent: 30,
@@ -2535,7 +2535,17 @@
             document.querySelectorAll('.section-subtitle').forEach((subtitle) => {
                 if (window.innerWidth > 768) {
                     const text = subtitle.textContent;
-                    subtitle.innerHTML = `<span class="line"><span class="line-inner">${text}</span></span>`;
+                    
+                    // Create elements safely without innerHTML
+                    const lineOuter = document.createElement('span');
+                    lineOuter.className = 'line';
+                    const lineInner = document.createElement('span');
+                    lineInner.className = 'line-inner';
+                    lineInner.textContent = text;
+                    lineOuter.appendChild(lineInner);
+                    
+                    subtitle.innerHTML = '';
+                    subtitle.appendChild(lineOuter);
                     
                     gsap.to(subtitle.querySelector('.line-inner'), {
                         y: 0,
@@ -2631,9 +2641,18 @@
             // 9. About text paragraphs reveal
             document.querySelectorAll('.about-text p').forEach((p, index) => {
                 if (window.innerWidth > 768) {
-                    // Use textContent to avoid XSS, then wrap in spans
                     const text = p.textContent;
-                    p.innerHTML = `<span class="line"><span class="line-inner">${text}</span></span>`;
+                    
+                    // Create elements safely without innerHTML
+                    const lineOuter = document.createElement('span');
+                    lineOuter.className = 'line';
+                    const lineInner = document.createElement('span');
+                    lineInner.className = 'line-inner';
+                    lineInner.textContent = text;
+                    lineOuter.appendChild(lineInner);
+                    
+                    p.innerHTML = '';
+                    p.appendChild(lineOuter);
                     
                     gsap.to(p.querySelector('.line-inner'), {
                         y: 0,
