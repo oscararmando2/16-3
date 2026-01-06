@@ -35,11 +35,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- GSAP and ScrollTrigger via CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    
     <style>
         /* ===== CSS VARIABLES ===== */
         :root {
@@ -312,20 +307,6 @@
             padding: 2rem;
             perspective: 1000px;
         }
-        
-        /* Parallax layers for hero */
-        .hero-bg-layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            will-change: transform;
-        }
-        
-        .hero-bg-layer-1 {
-            z-index: 1;
-        }
 
         .hero::before {
             content: '';
@@ -533,10 +514,6 @@
             padding: 6rem 2rem;
             position: relative;
         }
-        
-        .pinned-section {
-            will-change: transform;
-        }
 
         .container {
             max-width: 1400px;
@@ -574,24 +551,6 @@
             background-clip: text;
             animation: shimmer 4s ease-in-out infinite;
             letter-spacing: -1px;
-            overflow: hidden;
-        }
-        
-        /* Text reveal animations */
-        .char {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        
-        .line {
-            overflow: hidden;
-            display: block;
-        }
-        
-        .line-inner {
-            display: block;
-            transform: translateY(100%);
         }
 
         .section-subtitle {
@@ -1678,12 +1637,70 @@
         .scroll-reveal {
             opacity: 0;
             transform: translateY(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .scroll-reveal.revealed {
             opacity: 1;
             transform: translateY(0);
+        }
+        
+        /* Enhanced animations for service cards */
+        .service-card-outer {
+            opacity: 0;
+            transform: translateY(60px) scale(0.95);
+            transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .service-card-outer.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Enhanced animations for portfolio items */
+        .portfolio-item {
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .portfolio-item.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Slide-in from left animation for timeline */
+        .timeline-item {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .timeline-item.revealed {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Fade-in animation for testimonials */
+        .testimonials-carousel {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .testimonials-carousel.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Parallax elements - smooth transform on scroll */
+        .hero-content,
+        .particles {
+            transition: transform 0.1s ease-out, opacity 0.3s ease;
+            will-change: transform;
         }
 
         /* ===== RESPONSIVE DESIGN ===== */
@@ -1833,15 +1850,12 @@
 
     <!-- Hero Section -->
     <section class="hero" id="inicio">
-        <!-- Parallax background layers -->
-        <div class="hero-bg-layer hero-bg-layer-1">
-            <div class="particles">
-                <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
-                <div class="particle" style="top: 40%; left: 80%; animation-delay: 2s;"></div>
-                <div class="particle" style="top: 60%; left: 30%; animation-delay: 4s;"></div>
-                <div class="particle" style="top: 80%; left: 70%; animation-delay: 6s;"></div>
-                <div class="particle" style="top: 30%; left: 50%; animation-delay: 8s;"></div>
-            </div>
+        <div class="particles">
+            <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 40%; left: 80%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 60%; left: 30%; animation-delay: 4s;"></div>
+            <div class="particle" style="top: 80%; left: 70%; animation-delay: 6s;"></div>
+            <div class="particle" style="top: 30%; left: 50%; animation-delay: 8s;"></div>
         </div>
         <div class="hero-content">
             <h1 class="hero-logo">16:3</h1>
@@ -2347,35 +2361,91 @@
             }
         });
 
-        // ===== PARALLAX EFFECT FOR HERO =====
-        document.addEventListener('mousemove', (e) => {
+        // ===== CSS PARALLAX EFFECT FOR HERO =====
+        let ticking = false;
+        
+        const parallaxHero = () => {
+            const hero = document.querySelector('.hero');
             const heroContent = document.querySelector('.hero-content');
-            if (heroContent && window.innerWidth > 968) {
-                const x = (window.innerWidth - e.pageX * 2) / 100;
-                const y = (window.innerHeight - e.pageY * 2) / 100;
+            const particles = document.querySelector('.particles');
+            
+            if (!hero || !heroContent) return;
+            
+            const scrolled = window.pageYOffset;
+            const heroHeight = hero.offsetHeight;
+            
+            // Only apply parallax while hero is in view
+            if (scrolled < heroHeight) {
+                // Subtle parallax - content moves slower than scroll
+                heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
                 
-                heroContent.style.transform = `translateX(${x}px) translateY(${y}px)`;
+                // Background/particles move even slower for depth effect
+                if (particles) {
+                    particles.style.transform = `translateY(${scrolled * 0.5}px)`;
+                }
+                
+                // Fade out hero content as user scrolls down
+                const opacity = 1 - (scrolled / heroHeight) * 1.5;
+                heroContent.style.opacity = Math.max(opacity, 0);
+            }
+            
+            ticking = false;
+        };
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    parallaxHero();
+                    ticking = false;
+                });
+                ticking = true;
             }
         });
-
-        // ===== ENHANCED SCROLL REVEAL =====
-        const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
         
-        const revealOnScroll = () => {
-            scrollRevealElements.forEach((element, index) => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight - 100) {
+        // Initial parallax check
+        parallaxHero();
+
+        // ===== INTERSECTION OBSERVER FOR SCROLL ANIMATIONS =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observerCallback = (entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Add staggered delay for elements
+                    const delay = entry.target.dataset.delay || 0;
                     setTimeout(() => {
-                        element.classList.add('revealed');
-                    }, index * 30); // Staggered reveal
+                        entry.target.classList.add('revealed');
+                    }, delay);
+                    
+                    // Unobserve after revealing (optional - for one-time animations)
+                    // observer.unobserve(entry.target);
                 }
             });
         };
-
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // Initial check
+        
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        
+        // Observe all scroll-reveal elements
+        document.querySelectorAll('.scroll-reveal').forEach((element, index) => {
+            // Add staggered delays
+            element.dataset.delay = index * 50;
+            observer.observe(element);
+        });
+        
+        // Observe service cards with slide-up animation
+        document.querySelectorAll('.service-card-outer').forEach((card, index) => {
+            card.dataset.delay = index * 100;
+            observer.observe(card);
+        });
+        
+        // Observe portfolio items with fade-in animation
+        document.querySelectorAll('.portfolio-item').forEach((item, index) => {
+            item.dataset.delay = index * 150;
+            observer.observe(item);
+        })
 
         // ===== MOBILE PORTFOLIO SCROLL EFFECT =====
         const portfolioItemsForMobile = document.querySelectorAll('.portfolio-item');
@@ -2433,283 +2503,25 @@
         window.addEventListener('resize', checkPortfolioCenter);
         checkPortfolioCenter(); // Initial check
         
-        // ===== GSAP SCROLLTRIGGER ANIMATIONS =====
+        // ===== INTERSECTION OBSERVER FOR ADDITIONAL ELEMENTS =====
         
-        // Initialize GSAP animations when DOM is ready
-        function initGSAPAnimations() {
-            // Register ScrollTrigger plugin
-            gsap.registerPlugin(ScrollTrigger);
-            
-            // Cache viewport width for performance
-            // Note: This is cached at initialization. Text splitting animations
-            // are only set up once based on initial viewport size. This is intentional
-            // to avoid performance issues from re-splitting text on every resize.
-            // The animations themselves are responsive through CSS and ScrollTrigger.
-            const isDesktop = window.innerWidth > 768;
-            
-            // 1. Hero Parallax Effect - Multiple layers with different speeds
-            gsap.to('.hero-bg-layer-1', {
-                yPercent: 30,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '.hero',
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: 1
-                }
-            });
-            
-            gsap.to('.hero-content', {
-                yPercent: -20,
-                opacity: 0.5,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '.hero',
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: 1
-                }
-            });
-            
-            // 2. Pinned Section - Services section
-            ScrollTrigger.create({
-                trigger: '.services',
-                start: 'top top',
-                end: '+=400',
-                pin: true,
-                pinSpacing: true,
-                anticipatePin: 1
-            });
-            
-            // 3. Letter-by-letter reveal for section titles
-            document.querySelectorAll('.section-title').forEach((title, index) => {
-                // Skip splitting text on mobile for performance
-                if (isDesktop) {
-                    const text = title.textContent;
-                    
-                    // Safety check: skip if text is too long (performance consideration)
-                    if (text.length > 100) {
-                        return; // Skip animation for very long titles
-                    }
-                    
-                    // Use DocumentFragment for better performance
-                    const fragment = document.createDocumentFragment();
-                    
-                    // Split into characters
-                    text.split('').forEach(char => {
-                        const span = document.createElement('span');
-                        span.className = 'char';
-                        span.textContent = char === ' ' ? '\u00A0' : char;
-                        fragment.appendChild(span);
-                    });
-                    
-                    // Clear and append once
-                    title.textContent = '';
-                    title.appendChild(fragment);
-                    
-                    // Animate characters
-                    gsap.to(title.querySelectorAll('.char'), {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.05,
-                        stagger: 0.03,
-                        ease: 'power2.out',
-                        scrollTrigger: {
-                            trigger: title,
-                            start: 'top 80%',
-                            end: 'top 50%',
-                            toggleActions: 'play none none none'
-                        }
-                    });
-                }
-            });
-            
-            // 4. Line-by-line reveal for section subtitles
-            document.querySelectorAll('.section-subtitle').forEach((subtitle) => {
-                if (isDesktop) {
-                    const text = subtitle.textContent;
-                    
-                    // Create elements safely without innerHTML
-                    const lineOuter = document.createElement('span');
-                    lineOuter.className = 'line';
-                    const lineInner = document.createElement('span');
-                    lineInner.className = 'line-inner';
-                    lineInner.textContent = text;
-                    lineOuter.appendChild(lineInner);
-                    
-                    subtitle.textContent = '';
-                    subtitle.appendChild(lineOuter);
-                    
-                    gsap.to(subtitle.querySelector('.line-inner'), {
-                        y: 0,
-                        duration: 0.8,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: subtitle,
-                            start: 'top 85%',
-                            toggleActions: 'play none none none'
-                        }
-                    });
-                }
-            });
-            
-            // 5. Fade-in and scale for service cards on viewport entry
-            document.querySelectorAll('.service-card-outer').forEach((card, index) => {
-                gsap.fromTo(card,
-                    {
-                        opacity: 0,
-                        scale: 0.8,
-                        y: 50
-                    },
-                    {
-                        opacity: 1,
-                        scale: 1,
-                        y: 0,
-                        duration: 0.6,
-                        ease: 'power2.out',
-                        scrollTrigger: {
-                            trigger: card,
-                            start: 'top 85%',
-                            toggleActions: 'play none none none'
-                        },
-                        delay: index * 0.1
-                    }
-                );
-            });
-            
-            // 6. Fade-in and scale for portfolio items on viewport entry
-            document.querySelectorAll('.portfolio-item').forEach((item, index) => {
-                gsap.fromTo(item,
-                    {
-                        opacity: 0,
-                        scale: 0.85,
-                        y: 60
-                    },
-                    {
-                        opacity: 1,
-                        scale: 1,
-                        y: 0,
-                        duration: 0.8,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: item,
-                            start: 'top 85%',
-                            toggleActions: 'play none none none'
-                        },
-                        delay: index * 0.15
-                    }
-                );
-            });
-            
-            // 7. Pinned section for About (with parallax effect)
-            ScrollTrigger.create({
-                trigger: '.about',
-                start: 'top top',
-                end: '+=300',
-                pin: true,
-                pinSpacing: true,
-                anticipatePin: 1
-            });
-            
-            // 8. Timeline items reveal with stagger
-            gsap.fromTo('.timeline-item',
-                {
-                    opacity: 0,
-                    x: -50
-                },
-                {
-                    opacity: 1,
-                    x: 0,
-                    duration: 0.6,
-                    stagger: 0.2,
-                    ease: 'power2.out',
-                    scrollTrigger: {
-                        trigger: '.timeline',
-                        start: 'top 75%',
-                        toggleActions: 'play none none none'
-                    }
-                }
-            );
-            
-            // 9. About text paragraphs reveal
-            document.querySelectorAll('.about-text p').forEach((p, index) => {
-                if (isDesktop) {
-                    const text = p.textContent;
-                    
-                    // Create elements safely without innerHTML
-                    const lineOuter = document.createElement('span');
-                    lineOuter.className = 'line';
-                    const lineInner = document.createElement('span');
-                    lineInner.className = 'line-inner';
-                    lineInner.textContent = text;
-                    lineOuter.appendChild(lineInner);
-                    
-                    p.textContent = '';
-                    p.appendChild(lineOuter);
-                    
-                    gsap.to(p.querySelector('.line-inner'), {
-                        y: 0,
-                        duration: 0.8,
-                        ease: 'power3.out',
-                        scrollTrigger: {
-                            trigger: p,
-                            start: 'top 85%',
-                            toggleActions: 'play none none none'
-                        },
-                        delay: index * 0.1
-                    });
-                }
-            });
-            
-            // 10. Testimonials fade in
-            gsap.fromTo('.testimonials-carousel',
-                {
-                    opacity: 0,
-                    y: 40
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    ease: 'power2.out',
-                    scrollTrigger: {
-                        trigger: '.testimonials',
-                        start: 'top 70%',
-                        toggleActions: 'play none none none'
-                    }
-                }
-            );
-            
-            // 11. Footer sections stagger reveal
-            gsap.fromTo('.footer-section',
-                {
-                    opacity: 0,
-                    y: 30
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    stagger: 0.2,
-                    ease: 'power2.out',
-                    scrollTrigger: {
-                        trigger: '.footer',
-                        start: 'top 80%',
-                        toggleActions: 'play none none none'
-                    }
-                }
-            );
-            
-            // Refresh ScrollTrigger after all animations are set
-            ScrollTrigger.refresh();
+        // Observe timeline items
+        document.querySelectorAll('.timeline-item').forEach((item, index) => {
+            item.dataset.delay = index * 100;
+            observer.observe(item);
+        });
+        
+        // Observe testimonials carousel
+        const testimonialsCarousel = document.querySelector('.testimonials-carousel');
+        if (testimonialsCarousel) {
+            observer.observe(testimonialsCarousel);
         }
         
-        // Initialize when DOM is ready, or immediately if already loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initGSAPAnimations);
-        } else {
-            initGSAPAnimations();
-        }
+        // Observe footer sections
+        document.querySelectorAll('.footer-section').forEach((section, index) => {
+            section.dataset.delay = index * 150;
+            observer.observe(section);
+        });
     </script>
 </body>
 </html>

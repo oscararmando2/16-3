@@ -1,6 +1,6 @@
 // Service Worker for 16:3 PWA
-// Updated cache version to force refresh after GSAP implementation
-const CACHE_VERSION = 'v3';
+// Updated cache version to force refresh after contact info updates
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `16-3-${CACHE_VERSION}`;
 const GOOGLE_FONTS_URL = 'https://fonts.googleapis.com/css2?family=Titan+One&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&display=swap';
 
