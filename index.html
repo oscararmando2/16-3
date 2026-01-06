@@ -2449,6 +2449,10 @@
             gsap.registerPlugin(ScrollTrigger);
             
             // Cache viewport width for performance
+            // Note: This is cached at initialization. Text splitting animations
+            // are only set up once based on initial viewport size. This is intentional
+            // to avoid performance issues from re-splitting text on every resize.
+            // The animations themselves are responsive through CSS and ScrollTrigger.
             const isDesktop = window.innerWidth > 768;
             
             // 1. Hero Parallax Effect - Multiple layers with different speeds
@@ -2460,17 +2464,6 @@
                     start: 'top top',
                     end: 'bottom top',
                     scrub: 1
-                }
-            });
-            
-            gsap.to('.hero::before', {
-                yPercent: 50,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '.hero',
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: 2
                 }
             });
             
