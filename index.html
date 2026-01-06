@@ -1474,12 +1474,18 @@
 
         .contact-cta-lets {
             text-align: right;
+        }
+        
+        .contact-cta-lets.animate {
             animation: slideInLets 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             animation-delay: 0.3s;
         }
 
         .contact-cta-chat {
             text-align: left;
+        }
+        
+        .contact-cta-chat.animate {
             animation: slideInChat 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             animation-delay: 0.8s;
         }
@@ -1525,6 +1531,9 @@
                         inset 0 1px 0 rgba(255, 255, 255, 0.2);
             opacity: 0;
             transform: translateY(30px);
+        }
+        
+        .contact-cta-button.animate {
             animation: slideInButton 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             animation-delay: 1.3s;
         }
@@ -2747,6 +2756,37 @@
             item.dataset.delay = index * 100;
             observer.observe(item);
         });
+        
+        // ===== CONTACT CTA SCROLL-TRIGGERED ANIMATION =====
+        const contactCtaLets = document.querySelector('.contact-cta-lets');
+        const contactCtaChat = document.querySelector('.contact-cta-chat');
+        const contactCtaButton = document.querySelector('.contact-cta-button');
+        
+        const contactCtaObserverOptions = {
+            threshold: 0.3,
+            rootMargin: '0px'
+        };
+        
+        const contactCtaObserverCallback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Trigger animations in sequence
+                    if (contactCtaLets) contactCtaLets.classList.add('animate');
+                    if (contactCtaChat) contactCtaChat.classList.add('animate');
+                    if (contactCtaButton) contactCtaButton.classList.add('animate');
+                    
+                    // Unobserve after animating (one-time animation)
+                    contactCtaObserver.unobserve(entry.target);
+                }
+            });
+        };
+        
+        const contactCtaObserver = new IntersectionObserver(contactCtaObserverCallback, contactCtaObserverOptions);
+        
+        const contactCtaSection = document.querySelector('.contact-cta');
+        if (contactCtaSection) {
+            contactCtaObserver.observe(contactCtaSection);
+        }
         
         // Observe testimonials carousel
         const testimonialsCarousel = document.querySelector('.testimonials-carousel');
