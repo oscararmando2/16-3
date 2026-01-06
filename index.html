@@ -2443,11 +2443,14 @@
         
         // ===== GSAP SCROLLTRIGGER ANIMATIONS =====
         
-        // Register ScrollTrigger plugin
-        gsap.registerPlugin(ScrollTrigger);
-        
-        // Wait for DOM to be ready to initialize GSAP animations
-        window.addEventListener('DOMContentLoaded', () => {
+        // Initialize GSAP animations when DOM is ready
+        function initGSAPAnimations() {
+            // Register ScrollTrigger plugin
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Cache viewport width for performance
+            const isDesktop = window.innerWidth > 768;
+            
             // 1. Hero Parallax Effect - Multiple layers with different speeds
             gsap.to('.hero-bg-layer-1', {
                 yPercent: 30,
@@ -2496,7 +2499,7 @@
             // 3. Letter-by-letter reveal for section titles
             document.querySelectorAll('.section-title').forEach((title, index) => {
                 // Skip splitting text on mobile for performance
-                if (window.innerWidth > 768) {
+                if (isDesktop) {
                     const text = title.textContent;
                     
                     // Use DocumentFragment for better performance
@@ -2511,7 +2514,7 @@
                     });
                     
                     // Clear and append once
-                    title.innerHTML = '';
+                    title.textContent = '';
                     title.appendChild(fragment);
                     
                     // Animate characters
@@ -2533,7 +2536,7 @@
             
             // 4. Line-by-line reveal for section subtitles
             document.querySelectorAll('.section-subtitle').forEach((subtitle) => {
-                if (window.innerWidth > 768) {
+                if (isDesktop) {
                     const text = subtitle.textContent;
                     
                     // Create elements safely without innerHTML
@@ -2544,7 +2547,7 @@
                     lineInner.textContent = text;
                     lineOuter.appendChild(lineInner);
                     
-                    subtitle.innerHTML = '';
+                    subtitle.textContent = '';
                     subtitle.appendChild(lineOuter);
                     
                     gsap.to(subtitle.querySelector('.line-inner'), {
@@ -2640,7 +2643,7 @@
             
             // 9. About text paragraphs reveal
             document.querySelectorAll('.about-text p').forEach((p, index) => {
-                if (window.innerWidth > 768) {
+                if (isDesktop) {
                     const text = p.textContent;
                     
                     // Create elements safely without innerHTML
@@ -2651,7 +2654,7 @@
                     lineInner.textContent = text;
                     lineOuter.appendChild(lineInner);
                     
-                    p.innerHTML = '';
+                    p.textContent = '';
                     p.appendChild(lineOuter);
                     
                     gsap.to(p.querySelector('.line-inner'), {
@@ -2709,7 +2712,14 @@
             
             // Refresh ScrollTrigger after all animations are set
             ScrollTrigger.refresh();
-        });
+        }
+        
+        // Initialize when DOM is ready, or immediately if already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initGSAPAnimations);
+        } else {
+            initGSAPAnimations();
+        }
     </script>
 </body>
 </html>
