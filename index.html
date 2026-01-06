@@ -2316,50 +2316,14 @@
             });
         });
 
-        // ===== MOBILE CLICK TO SHOW SERVICE INFO =====
+        // ===== MOBILE BREAKPOINT AND CENTER ZONE CONSTANTS =====
         const MOBILE_BREAKPOINT = 968;
+        const CENTER_ZONE_START = 0.35; // 35% from top/left of viewport
+        const CENTER_ZONE_END = 0.65; // 65% from top/left of viewport
         
         function isMobile() {
             return window.innerWidth <= MOBILE_BREAKPOINT;
         }
-
-        document.querySelectorAll('.service-card-outer').forEach(cardOuter => {
-            cardOuter.addEventListener('click', (e) => {
-                if (isMobile()) {
-                    e.stopPropagation();
-                    
-                    // Remove active class from all cards
-                    document.querySelectorAll('.service-card-outer').forEach(c => {
-                        if (c !== cardOuter) {
-                            c.classList.remove('mobile-info-active');
-                        }
-                    });
-                    
-                    // Toggle active class on clicked card
-                    cardOuter.classList.toggle('mobile-info-active');
-                }
-            });
-        });
-
-        // Close service info when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (isMobile()) {
-                const serviceCards = document.querySelectorAll('.service-card-outer');
-                let clickedInsideCard = false;
-                
-                serviceCards.forEach(card => {
-                    if (card.contains(e.target)) {
-                        clickedInsideCard = true;
-                    }
-                });
-                
-                if (!clickedInsideCard) {
-                    serviceCards.forEach(card => {
-                        card.classList.remove('mobile-info-active');
-                    });
-                }
-            }
-        });
 
         // ===== CSS PARALLAX EFFECT FOR HERO =====
         let ticking = false;
@@ -2447,10 +2411,74 @@
             observer.observe(item);
         })
 
+        // ===== MOBILE SERVICE CARDS SCROLL EFFECT =====
+        const serviceCardsForMobile = document.querySelectorAll('.service-card-outer');
+        const servicesGridContainer = document.querySelector('.services-grid');
+        let serviceScrollTimeout;
+        let serviceScrollEndTimeout;
+        
+        const checkServiceCenter = () => {
+            // Only run on mobile devices
+            if (window.innerWidth > MOBILE_BREAKPOINT) {
+                // Remove mobile-info-active class on desktop
+                serviceCardsForMobile.forEach(card => {
+                    card.classList.remove('mobile-info-active');
+                });
+                return;
+            }
+
+            const windowHeight = window.innerHeight;
+            const windowWidth = window.innerWidth;
+            const verticalCenterStart = windowHeight * CENTER_ZONE_START;
+            const verticalCenterEnd = windowHeight * CENTER_ZONE_END;
+            const horizontalCenterStart = windowWidth * CENTER_ZONE_START;
+            const horizontalCenterEnd = windowWidth * CENTER_ZONE_END;
+            
+            serviceCardsForMobile.forEach((card) => {
+                const rect = card.getBoundingClientRect();
+                const cardVerticalCenter = rect.top + (rect.height / 2);
+                const cardHorizontalCenter = rect.left + (rect.width / 2);
+                
+                // Check if the center of the card is within the center zone of viewport
+                // Both vertically AND horizontally centered
+                const isVerticallyCentered = cardVerticalCenter >= verticalCenterStart && cardVerticalCenter <= verticalCenterEnd;
+                const isHorizontallyCentered = cardHorizontalCenter >= horizontalCenterStart && cardHorizontalCenter <= horizontalCenterEnd;
+                
+                if (isVerticallyCentered && isHorizontallyCentered) {
+                    card.classList.add('mobile-info-active');
+                } else {
+                    card.classList.remove('mobile-info-active');
+                }
+            });
+        };
+
+        // Throttled scroll handler for service cards
+        const handleServiceScroll = () => {
+            // Throttle during scroll
+            if (!serviceScrollTimeout) {
+                checkServiceCenter();
+                serviceScrollTimeout = setTimeout(() => {
+                    serviceScrollTimeout = null;
+                }, 50); // 50ms throttle
+            }
+            
+            // Ensure final position is captured after scrolling stops
+            clearTimeout(serviceScrollEndTimeout);
+            serviceScrollEndTimeout = setTimeout(() => {
+                checkServiceCenter();
+            }, 150); // Check final position after scroll ends
+        };
+
+        // Run on window scroll, services grid scroll, and resize
+        window.addEventListener('scroll', handleServiceScroll);
+        if (servicesGridContainer) {
+            servicesGridContainer.addEventListener('scroll', handleServiceScroll);
+        }
+        window.addEventListener('resize', checkServiceCenter);
+        checkServiceCenter(); // Initial check
+
         // ===== MOBILE PORTFOLIO SCROLL EFFECT =====
         const portfolioItemsForMobile = document.querySelectorAll('.portfolio-item');
-        const CENTER_ZONE_START = 0.35; // 35% from top of viewport
-        const CENTER_ZONE_END = 0.65; // 65% from top of viewport
         let portfolioScrollTimeout;
         let portfolioScrollEndTimeout;
         
