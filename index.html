@@ -2316,8 +2316,10 @@
             });
         });
 
-        // ===== MOBILE BREAKPOINT =====
+        // ===== MOBILE BREAKPOINT AND CENTER ZONE CONSTANTS =====
         const MOBILE_BREAKPOINT = 968;
+        const CENTER_ZONE_START = 0.35; // 35% from top/left of viewport
+        const CENTER_ZONE_END = 0.65; // 65% from top/left of viewport
         
         function isMobile() {
             return window.innerWidth <= MOBILE_BREAKPOINT;
@@ -2412,8 +2414,6 @@
         // ===== MOBILE SERVICE CARDS SCROLL EFFECT =====
         const serviceCardsForMobile = document.querySelectorAll('.service-card-outer');
         const servicesGridContainer = document.querySelector('.services-grid');
-        const SERVICE_CENTER_ZONE_START = 0.35; // 35% from top/left of viewport
-        const SERVICE_CENTER_ZONE_END = 0.65; // 65% from top/left of viewport
         let serviceScrollTimeout;
         let serviceScrollEndTimeout;
         
@@ -2429,10 +2429,10 @@
 
             const windowHeight = window.innerHeight;
             const windowWidth = window.innerWidth;
-            const verticalCenterStart = windowHeight * SERVICE_CENTER_ZONE_START;
-            const verticalCenterEnd = windowHeight * SERVICE_CENTER_ZONE_END;
-            const horizontalCenterStart = windowWidth * SERVICE_CENTER_ZONE_START;
-            const horizontalCenterEnd = windowWidth * SERVICE_CENTER_ZONE_END;
+            const verticalCenterStart = windowHeight * CENTER_ZONE_START;
+            const verticalCenterEnd = windowHeight * CENTER_ZONE_END;
+            const horizontalCenterStart = windowWidth * CENTER_ZONE_START;
+            const horizontalCenterEnd = windowWidth * CENTER_ZONE_END;
             
             serviceCardsForMobile.forEach((card) => {
                 const rect = card.getBoundingClientRect();
@@ -2479,8 +2479,6 @@
 
         // ===== MOBILE PORTFOLIO SCROLL EFFECT =====
         const portfolioItemsForMobile = document.querySelectorAll('.portfolio-item');
-        const CENTER_ZONE_START = 0.35; // 35% from top of viewport
-        const CENTER_ZONE_END = 0.65; // 65% from top of viewport
         let portfolioScrollTimeout;
         let portfolioScrollEndTimeout;
         
