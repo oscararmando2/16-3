@@ -326,14 +326,6 @@
         .hero-bg-layer-1 {
             z-index: 1;
         }
-        
-        .hero-bg-layer-2 {
-            z-index: 2;
-        }
-        
-        .hero-bg-layer-3 {
-            z-index: 3;
-        }
 
         .hero::before {
             content: '';
@@ -2494,6 +2486,11 @@
                 // Skip splitting text on mobile for performance
                 if (isDesktop) {
                     const text = title.textContent;
+                    
+                    // Safety check: skip if text is too long (performance consideration)
+                    if (text.length > 100) {
+                        return; // Skip animation for very long titles
+                    }
                     
                     // Use DocumentFragment for better performance
                     const fragment = document.createDocumentFragment();
