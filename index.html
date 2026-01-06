@@ -1573,7 +1573,7 @@
             }
 
             .contact-cta-word {
-                font-size: clamp(60px, 20vw, 120px);
+                font-size: clamp(80px, 22vw, 120px);
             }
 
             .contact-cta-button {
@@ -1588,7 +1588,7 @@
             }
 
             .contact-cta-word {
-                font-size: clamp(50px, 25vw, 100px);
+                font-size: clamp(80px, 25vw, 120px);
             }
 
             .contact-cta-button {
@@ -2751,25 +2751,6 @@
             section.dataset.delay = index * 150;
             observer.observe(section);
         });
-
-        // ===== CONTACT CTA ANIMATION OBSERVER =====
-        const contactCTA = document.querySelector('.contact-cta');
-        if (contactCTA) {
-            const ctaObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        // Only trigger once
-                        ctaObserver.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.3,
-                rootMargin: '0px'
-            });
-            
-            ctaObserver.observe(contactCTA);
-        }
     </script>
 </body>
 </html>
