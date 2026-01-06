@@ -1409,6 +1409,194 @@
             height: 100%;
         }
 
+        /* ===== CONTACT CTA SECTION ===== */
+        .contact-cta {
+            background: var(--color-bg-primary);
+            padding: 8rem 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+        }
+
+        .contact-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1000px;
+            height: 1000px;
+            background: radial-gradient(circle, rgba(232, 80, 20, 0.2) 0%, transparent 70%);
+            animation: ctaGlow 10s ease-in-out infinite;
+        }
+
+        @keyframes ctaGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        .contact-cta-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .contact-cta-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-cta-word {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: clamp(80px, 15vw, 200px);
+            line-height: 1;
+            background: linear-gradient(135deg, #E85014 0%, #FF6B35 50%, #E85014 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 60px rgba(232, 80, 20, 0.8));
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .contact-cta-lets {
+            animation: slideInWord 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 0.3s;
+        }
+
+        .contact-cta-chat {
+            animation: slideInWord 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes slideInWord {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .contact-cta-button {
+            display: inline-block;
+            padding: 1.8rem 5rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            background: linear-gradient(135deg, var(--color-accent-orange) 0%, var(--color-accent-orange-light) 100%);
+            border: 2px solid var(--color-accent-orange);
+            border-radius: 50px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition-elastic);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(232, 80, 20, 0.4),
+                        0 0 20px rgba(232, 80, 20, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInButton 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 1.3s;
+        }
+
+        @keyframes slideInButton {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .contact-cta-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 70%
+            );
+            transform: rotate(45deg);
+            animation: buttonShineAlt 3s ease-in-out infinite;
+        }
+
+        @keyframes buttonShineAlt {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .contact-cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(232, 80, 20, 0.6),
+                        0 0 60px rgba(232, 80, 20, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: var(--color-accent-orange-light);
+        }
+
+        .contact-cta-button:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        /* Mobile adjustments for Contact CTA */
+        @media (max-width: 968px) {
+            .contact-cta {
+                padding: 6rem 2rem;
+                min-height: 50vh;
+            }
+
+            .contact-cta-text {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .contact-cta-word {
+                font-size: clamp(60px, 20vw, 120px);
+            }
+
+            .contact-cta-button {
+                padding: 1.5rem 3rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-cta {
+                padding: 4rem 1.5rem;
+            }
+
+            .contact-cta-word {
+                font-size: clamp(50px, 25vw, 100px);
+            }
+
+            .contact-cta-button {
+                padding: 1.2rem 2.5rem;
+                font-size: 1rem;
+            }
+        }
+
         /* ===== FOOTER ===== */
         .footer {
             background: var(--color-bg-secondary);
@@ -2139,6 +2327,19 @@
         </div>
     </section>
 
+    <!-- Contact CTA Section -->
+    <section class="contact-cta">
+        <div class="container">
+            <div class="contact-cta-content">
+                <div class="contact-cta-text">
+                    <span class="contact-cta-word contact-cta-lets">LET'S</span>
+                    <span class="contact-cta-word contact-cta-chat">CHAT</span>
+                </div>
+                <a href="https://wa.me/13148509615" target="_blank" class="contact-cta-button">Envíanos Mensaje</a>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer" id="contacto">
         <div class="footer-content">
@@ -2550,6 +2751,25 @@
             section.dataset.delay = index * 150;
             observer.observe(section);
         });
+
+        // ===== CONTACT CTA ANIMATION OBSERVER =====
+        const contactCTA = document.querySelector('.contact-cta');
+        if (contactCTA) {
+            const ctaObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Only trigger once
+                        ctaObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '0px'
+            });
+            
+            ctaObserver.observe(contactCTA);
+        }
     </script>
 </body>
 </html>
