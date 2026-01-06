@@ -2498,15 +2498,21 @@
                 // Skip splitting text on mobile for performance
                 if (window.innerWidth > 768) {
                     const text = title.textContent;
-                    title.innerHTML = '';
+                    
+                    // Use DocumentFragment for better performance
+                    const fragment = document.createDocumentFragment();
                     
                     // Split into characters
                     text.split('').forEach(char => {
                         const span = document.createElement('span');
                         span.className = 'char';
                         span.textContent = char === ' ' ? '\u00A0' : char;
-                        title.appendChild(span);
+                        fragment.appendChild(span);
                     });
+                    
+                    // Clear and append once
+                    title.innerHTML = '';
+                    title.appendChild(fragment);
                     
                     // Animate characters
                     gsap.to(title.querySelectorAll('.char'), {
@@ -2625,7 +2631,8 @@
             // 9. About text paragraphs reveal
             document.querySelectorAll('.about-text p').forEach((p, index) => {
                 if (window.innerWidth > 768) {
-                    const text = p.innerHTML;
+                    // Use textContent to avoid XSS, then wrap in spans
+                    const text = p.textContent;
                     p.innerHTML = `<span class="line"><span class="line-inner">${text}</span></span>`;
                     
                     gsap.to(p.querySelector('.line-inner'), {
