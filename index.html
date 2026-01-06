@@ -1637,12 +1637,70 @@
         .scroll-reveal {
             opacity: 0;
             transform: translateY(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .scroll-reveal.revealed {
             opacity: 1;
             transform: translateY(0);
+        }
+        
+        /* Enhanced animations for service cards */
+        .service-card-outer {
+            opacity: 0;
+            transform: translateY(60px) scale(0.95);
+            transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .service-card-outer.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Enhanced animations for portfolio items */
+        .portfolio-item {
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .portfolio-item.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Slide-in from left animation for timeline */
+        .timeline-item {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .timeline-item.revealed {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Fade-in animation for testimonials */
+        .testimonials-carousel {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .testimonials-carousel.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Parallax elements - smooth transform on scroll */
+        .hero-content,
+        .particles {
+            transition: transform 0.1s ease-out, opacity 0.3s ease;
+            will-change: transform;
         }
 
         /* ===== RESPONSIVE DESIGN ===== */
@@ -2303,35 +2361,91 @@
             }
         });
 
-        // ===== PARALLAX EFFECT FOR HERO =====
-        document.addEventListener('mousemove', (e) => {
+        // ===== CSS PARALLAX EFFECT FOR HERO =====
+        let ticking = false;
+        
+        const parallaxHero = () => {
+            const hero = document.querySelector('.hero');
             const heroContent = document.querySelector('.hero-content');
-            if (heroContent && window.innerWidth > 968) {
-                const x = (window.innerWidth - e.pageX * 2) / 100;
-                const y = (window.innerHeight - e.pageY * 2) / 100;
+            const particles = document.querySelector('.particles');
+            
+            if (!hero || !heroContent) return;
+            
+            const scrolled = window.pageYOffset;
+            const heroHeight = hero.offsetHeight;
+            
+            // Only apply parallax while hero is in view
+            if (scrolled < heroHeight) {
+                // Subtle parallax - content moves slower than scroll
+                heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
                 
-                heroContent.style.transform = `translateX(${x}px) translateY(${y}px)`;
+                // Background/particles move even slower for depth effect
+                if (particles) {
+                    particles.style.transform = `translateY(${scrolled * 0.5}px)`;
+                }
+                
+                // Fade out hero content as user scrolls down
+                const opacity = 1 - (scrolled / heroHeight) * 1.5;
+                heroContent.style.opacity = Math.max(opacity, 0);
+            }
+            
+            ticking = false;
+        };
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    parallaxHero();
+                    ticking = false;
+                });
+                ticking = true;
             }
         });
-
-        // ===== ENHANCED SCROLL REVEAL =====
-        const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
         
-        const revealOnScroll = () => {
-            scrollRevealElements.forEach((element, index) => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight - 100) {
+        // Initial parallax check
+        parallaxHero();
+
+        // ===== INTERSECTION OBSERVER FOR SCROLL ANIMATIONS =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observerCallback = (entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Add staggered delay for elements
+                    const delay = entry.target.dataset.delay || 0;
                     setTimeout(() => {
-                        element.classList.add('revealed');
-                    }, index * 30); // Staggered reveal
+                        entry.target.classList.add('revealed');
+                    }, delay);
+                    
+                    // Unobserve after revealing (optional - for one-time animations)
+                    // observer.unobserve(entry.target);
                 }
             });
         };
-
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // Initial check
+        
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        
+        // Observe all scroll-reveal elements
+        document.querySelectorAll('.scroll-reveal').forEach((element, index) => {
+            // Add staggered delays
+            element.dataset.delay = index * 50;
+            observer.observe(element);
+        });
+        
+        // Observe service cards with slide-up animation
+        document.querySelectorAll('.service-card-outer').forEach((card, index) => {
+            card.dataset.delay = index * 100;
+            observer.observe(card);
+        });
+        
+        // Observe portfolio items with fade-in animation
+        document.querySelectorAll('.portfolio-item').forEach((item, index) => {
+            item.dataset.delay = index * 150;
+            observer.observe(item);
+        })
 
         // ===== MOBILE PORTFOLIO SCROLL EFFECT =====
         const portfolioItemsForMobile = document.querySelectorAll('.portfolio-item');
@@ -2388,6 +2502,26 @@
         window.addEventListener('scroll', handlePortfolioScroll);
         window.addEventListener('resize', checkPortfolioCenter);
         checkPortfolioCenter(); // Initial check
+        
+        // ===== INTERSECTION OBSERVER FOR ADDITIONAL ELEMENTS =====
+        
+        // Observe timeline items
+        document.querySelectorAll('.timeline-item').forEach((item, index) => {
+            item.dataset.delay = index * 100;
+            observer.observe(item);
+        });
+        
+        // Observe testimonials carousel
+        const testimonialsCarousel = document.querySelector('.testimonials-carousel');
+        if (testimonialsCarousel) {
+            observer.observe(testimonialsCarousel);
+        }
+        
+        // Observe footer sections
+        document.querySelectorAll('.footer-section').forEach((section, index) => {
+            section.dataset.delay = index * 150;
+            observer.observe(section);
+        });
     </script>
 </body>
 </html>
