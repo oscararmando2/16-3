@@ -1409,6 +1409,202 @@
             height: 100%;
         }
 
+        /* ===== CONTACT CTA SECTION ===== */
+        .contact-cta {
+            background: var(--color-bg-primary);
+            padding: 8rem 2rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+        }
+
+        .contact-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, rgba(232, 80, 20, 0.2) 0%, transparent 70%);
+            animation: ctaGlow 10s ease-in-out infinite;
+        }
+
+        @keyframes ctaGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+
+        .contact-cta-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .contact-cta-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+            gap: 0.5rem;
+            margin-bottom: 3rem;
+            width: 100%;
+        }
+
+        .contact-cta-word {
+            font-family: 'Titan One', var(--font-logo);
+            font-weight: 400;
+            font-size: clamp(100px, 25vw, 300px);
+            line-height: 0.9;
+            background: linear-gradient(135deg, #E85014 0%, #FF6B35 50%, #E85014 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 60px rgba(232, 80, 20, 0.8));
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .contact-cta-lets {
+            text-align: right;
+            animation: slideInLets 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 0.3s;
+        }
+
+        .contact-cta-chat {
+            text-align: left;
+            animation: slideInChat 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes slideInLets {
+            0% {
+                opacity: 0;
+                transform: translateX(100px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes slideInChat {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        .contact-cta-button {
+            display: inline-block;
+            padding: 1.8rem 5rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            background: linear-gradient(135deg, var(--color-accent-orange) 0%, var(--color-accent-orange-light) 100%);
+            border: 2px solid var(--color-accent-orange);
+            border-radius: 50px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition-elastic);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(232, 80, 20, 0.4),
+                        0 0 20px rgba(232, 80, 20, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInButton 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 1.3s;
+        }
+
+        @keyframes slideInButton {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .contact-cta-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 70%
+            );
+            transform: rotate(45deg);
+            animation: buttonShine 3s ease-in-out infinite;
+        }
+
+        .contact-cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(232, 80, 20, 0.6),
+                        0 0 60px rgba(232, 80, 20, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: var(--color-accent-orange-light);
+        }
+
+        .contact-cta-button:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        /* Mobile adjustments for Contact CTA */
+        @media (max-width: 968px) {
+            .contact-cta {
+                padding: 6rem 1rem;
+                min-height: 50vh;
+            }
+
+            .contact-cta-text {
+                gap: 0.5rem;
+            }
+
+            .contact-cta-word {
+                font-size: clamp(120px, 35vw, 180px);
+            }
+
+            .contact-cta-button {
+                padding: 1.5rem 3rem;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-cta {
+                padding: 4rem 0.5rem;
+            }
+
+            .contact-cta-word {
+                font-size: clamp(80px, 30vw, 150px);
+            }
+
+            .contact-cta-button {
+                padding: 1.2rem 2.5rem;
+                font-size: 1rem;
+            }
+        }
+
         /* ===== FOOTER ===== */
         .footer {
             background: var(--color-bg-secondary);
@@ -2135,6 +2331,19 @@
                 <span class="dot active" data-index="0"></span>
                 <span class="dot" data-index="1"></span>
                 <span class="dot" data-index="2"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA Section -->
+    <section class="contact-cta">
+        <div class="container">
+            <div class="contact-cta-content">
+                <div class="contact-cta-text">
+                    <span class="contact-cta-word contact-cta-lets">LET'S</span>
+                    <span class="contact-cta-word contact-cta-chat">CHAT</span>
+                </div>
+                <a href="https://wa.me/13148509615" target="_blank" class="contact-cta-button">Envíanos Mensaje</a>
             </div>
         </div>
     </section>
