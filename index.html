@@ -821,36 +821,82 @@
             display: none;
         }
 
-        /* Tooltip for service descriptions */
-        .service-card-outer:hover::after {
-            content: attr(data-description);
+        /* Professional info overlay for service descriptions */
+        .service-info-overlay {
             position: absolute;
-            bottom: -90px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            padding: 1.2rem;
-            background: rgba(26, 26, 39, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(232, 80, 20, 0.3);
-            border-radius: 16px;
-            color: var(--color-text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            z-index: 1000;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
-                        0 0 30px rgba(232, 80, 20, 0.2);
-            animation: tooltipFadeIn 0.4s ease;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(26, 26, 39, 0.98) 0%, 
+                rgba(10, 10, 15, 0.98) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            z-index: 10;
+            border: 1px solid rgba(232, 80, 20, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8),
+                        0 0 40px rgba(232, 80, 20, 0.3);
         }
 
-        @keyframes tooltipFadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-10px);
-            }
-            to {
+        .service-info-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 22px;
+            padding: 2px;
+            background: linear-gradient(135deg, 
+                var(--color-accent-orange) 0%, 
+                var(--color-accent-orange-light) 50%,
+                var(--color-accent-orange) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .service-info-text {
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            line-height: 1.8;
+            text-align: center;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Show overlay on hover for desktop */
+        @media (min-width: 969px) {
+            .service-card-outer:hover .service-info-overlay {
                 opacity: 1;
-                transform: translateX(-50%) translateY(0);
+                visibility: visible;
+            }
+        }
+
+        /* Show overlay on click/active for mobile */
+        @media (max-width: 968px) {
+            .service-card-outer.mobile-info-active .service-info-overlay {
+                opacity: 1;
+                visibility: visible;
             }
         }
 
@@ -1769,7 +1815,7 @@
                 <p class="section-subtitle">Soluciones integrales para llevar tu marca al siguiente nivel</p>
             </div>
             <div class="services-grid">
-                <div class="service-card-outer scroll-reveal" data-description="Soluciones de IA: videos automatizados, agentes inteligentes, automatizaciones y más.">
+                <div class="service-card-outer scroll-reveal">
                     <div class="service-card-dot"></div>
                     <div class="service-card">
                         <div class="service-ray"></div>
@@ -1778,9 +1824,12 @@
                         <div class="service-line service-line-left"></div>
                         <div class="service-line service-line-bottom"></div>
                         <div class="service-line service-line-right"></div>
+                        <div class="service-info-overlay">
+                            <div class="service-info-text">Soluciones de IA: videos automatizados, agentes inteligentes, automatizaciones y más.</div>
+                        </div>
                     </div>
                 </div>
-                <div class="service-card-outer scroll-reveal" data-description="Sitios web modernos, responsivos y optimizados para convertir visitantes en clientes.">
+                <div class="service-card-outer scroll-reveal">
                     <div class="service-card-dot"></div>
                     <div class="service-card">
                         <div class="service-ray"></div>
@@ -1789,9 +1838,12 @@
                         <div class="service-line service-line-left"></div>
                         <div class="service-line service-line-bottom"></div>
                         <div class="service-line service-line-right"></div>
+                        <div class="service-info-overlay">
+                            <div class="service-info-text">Sitios web modernos, responsivos y optimizados para convertir visitantes en clientes.</div>
+                        </div>
                     </div>
                 </div>
-                <div class="service-card-outer scroll-reveal" data-description="Aplicaciones móviles intuitivas con experiencias de usuario excepcionales.">
+                <div class="service-card-outer scroll-reveal">
                     <div class="service-card-dot"></div>
                     <div class="service-card">
                         <div class="service-ray"></div>
@@ -1800,9 +1852,12 @@
                         <div class="service-line service-line-left"></div>
                         <div class="service-line service-line-bottom"></div>
                         <div class="service-line service-line-right"></div>
+                        <div class="service-info-overlay">
+                            <div class="service-info-text">Aplicaciones móviles intuitivas con experiencias de usuario excepcionales.</div>
+                        </div>
                     </div>
                 </div>
-                <div class="service-card-outer scroll-reveal" data-description="Estrategias completas para aumentar tu presencia y ventas en línea.">
+                <div class="service-card-outer scroll-reveal">
                     <div class="service-card-dot"></div>
                     <div class="service-card">
                         <div class="service-ray"></div>
@@ -1811,9 +1866,12 @@
                         <div class="service-line service-line-left"></div>
                         <div class="service-line service-line-bottom"></div>
                         <div class="service-line service-line-right"></div>
+                        <div class="service-info-overlay">
+                            <div class="service-info-text">Estrategias completas para aumentar tu presencia y ventas en línea.</div>
+                        </div>
                     </div>
                 </div>
-                <div class="service-card-outer scroll-reveal" data-description="Contenido atractivo y relevante que conecta con tu audiencia.">
+                <div class="service-card-outer scroll-reveal">
                     <div class="service-card-dot"></div>
                     <div class="service-card">
                         <div class="service-ray"></div>
@@ -1822,9 +1880,12 @@
                         <div class="service-line service-line-left"></div>
                         <div class="service-line service-line-bottom"></div>
                         <div class="service-line service-line-right"></div>
+                        <div class="service-info-overlay">
+                            <div class="service-info-text">Contenido atractivo y relevante que conecta con tu audiencia.</div>
+                        </div>
                     </div>
                 </div>
-                <div class="service-card-outer scroll-reveal" data-description="Optimización para motores de búsqueda para mejorar tu visibilidad online.">
+                <div class="service-card-outer scroll-reveal">
                     <div class="service-card-dot"></div>
                     <div class="service-card">
                         <div class="service-ray"></div>
@@ -1833,9 +1894,12 @@
                         <div class="service-line service-line-left"></div>
                         <div class="service-line service-line-bottom"></div>
                         <div class="service-line service-line-right"></div>
+                        <div class="service-info-overlay">
+                            <div class="service-info-text">Optimización para motores de búsqueda para mejorar tu visibilidad online.</div>
+                        </div>
                     </div>
                 </div>
-                <div class="service-card-outer scroll-reveal" data-description="Identidades visuales únicas que representan la esencia de tu marca.">
+                <div class="service-card-outer scroll-reveal">
                     <div class="service-card-dot"></div>
                     <div class="service-card">
                         <div class="service-ray"></div>
@@ -1844,9 +1908,12 @@
                         <div class="service-line service-line-left"></div>
                         <div class="service-line service-line-bottom"></div>
                         <div class="service-line service-line-right"></div>
+                        <div class="service-info-overlay">
+                            <div class="service-info-text">Identidades visuales únicas que representan la esencia de tu marca.</div>
+                        </div>
                     </div>
                 </div>
-                <div class="service-card-outer scroll-reveal" data-description="Estrategias de marketing directo para conectar con tu público objetivo.">
+                <div class="service-card-outer scroll-reveal">
                     <div class="service-card-dot"></div>
                     <div class="service-card">
                         <div class="service-ray"></div>
@@ -1855,9 +1922,12 @@
                         <div class="service-line service-line-left"></div>
                         <div class="service-line service-line-bottom"></div>
                         <div class="service-line service-line-right"></div>
+                        <div class="service-info-overlay">
+                            <div class="service-info-text">Estrategias de marketing directo para conectar con tu público objetivo.</div>
+                        </div>
                     </div>
                 </div>
-                <div class="service-card-outer scroll-reveal" data-description="Diseños impactantes para medios impresos tradicionales.">
+                <div class="service-card-outer scroll-reveal">
                     <div class="service-card-dot"></div>
                     <div class="service-card">
                         <div class="service-ray"></div>
@@ -1866,6 +1936,9 @@
                         <div class="service-line service-line-left"></div>
                         <div class="service-line service-line-bottom"></div>
                         <div class="service-line service-line-right"></div>
+                        <div class="service-info-overlay">
+                            <div class="service-info-text">Diseños impactantes para medios impresos tradicionales.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2185,6 +2258,51 @@
             });
         });
 
+        // ===== MOBILE CLICK TO SHOW SERVICE INFO =====
+        const MOBILE_BREAKPOINT = 968;
+        
+        function isMobile() {
+            return window.innerWidth <= MOBILE_BREAKPOINT;
+        }
+
+        document.querySelectorAll('.service-card-outer').forEach(cardOuter => {
+            cardOuter.addEventListener('click', (e) => {
+                if (isMobile()) {
+                    e.stopPropagation();
+                    
+                    // Remove active class from all cards
+                    document.querySelectorAll('.service-card-outer').forEach(c => {
+                        if (c !== cardOuter) {
+                            c.classList.remove('mobile-info-active');
+                        }
+                    });
+                    
+                    // Toggle active class on clicked card
+                    cardOuter.classList.toggle('mobile-info-active');
+                }
+            });
+        });
+
+        // Close service info when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (isMobile()) {
+                const serviceCards = document.querySelectorAll('.service-card-outer');
+                let clickedInsideCard = false;
+                
+                serviceCards.forEach(card => {
+                    if (card.contains(e.target)) {
+                        clickedInsideCard = true;
+                    }
+                });
+                
+                if (!clickedInsideCard) {
+                    serviceCards.forEach(card => {
+                        card.classList.remove('mobile-info-active');
+                    });
+                }
+            }
+        });
+
         // ===== PARALLAX EFFECT FOR HERO =====
         document.addEventListener('mousemove', (e) => {
             const heroContent = document.querySelector('.hero-content');
@@ -2217,7 +2335,6 @@
 
         // ===== MOBILE PORTFOLIO SCROLL EFFECT =====
         const portfolioItemsForMobile = document.querySelectorAll('.portfolio-item');
-        const MOBILE_BREAKPOINT = 968; // Match CSS media query breakpoint
         const CENTER_ZONE_START = 0.35; // 35% from top of viewport
         const CENTER_ZONE_END = 0.65; // 65% from top of viewport
         let portfolioScrollTimeout;
