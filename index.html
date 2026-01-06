@@ -1427,8 +1427,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 1000px;
-            height: 1000px;
+            width: 100vw;
+            height: 100vh;
             background: radial-gradient(circle, rgba(232, 80, 20, 0.2) 0%, transparent 70%);
             animation: ctaGlow 10s ease-in-out infinite;
         }
@@ -1540,12 +1540,7 @@
                 transparent 70%
             );
             transform: rotate(45deg);
-            animation: buttonShineAlt 3s ease-in-out infinite;
-        }
-
-        @keyframes buttonShineAlt {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            animation: buttonShine 3s ease-in-out infinite;
         }
 
         .contact-cta-button:hover {
